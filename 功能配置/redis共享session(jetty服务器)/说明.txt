@@ -1,0 +1,18 @@
+将项目部署在多个jetty服务器上，用Nginx代理服务管理这多个jetty，通过redis实现session共享，Nginx默认对多个jetty的访问概率相等，可以根据jetty服务器的好坏设置访问比重(如jetty1 weight = 2，jetty2 weight = 1)(还有其他功能)
+
+#在server上添加此upstream节点
+upstream mytomcat{
+    #分权 即访问131与134的次数比例为1比1
+        server 192.168.14.131:8080 weight=1;
+        server 192.168.14.134:8080 weight=1;
+        }
+
+    server {
+        listen 80;
+        server_name localhost;
+        #即所有请求都到这里去找分配
+        location / {
+       #使用mytomcat分配规则，即刚自定义添加的upstream节点
+           proxy_pass http://mytomcat;
+        }
+    }
