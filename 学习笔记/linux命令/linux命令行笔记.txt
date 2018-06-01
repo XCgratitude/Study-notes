@@ -1,0 +1,68 @@
+make distclean 
+
+
+解压：tar -xvf FileName.tar.gz
+
+如何获得root权限：打开终端，输入su回车 然后输入密码回车就行了
+
+
+输入firewall-cmd --query-port=6379/tcp，如果返回结果为no，那么证明6379端口确实没有开启
+输入firewall-cmd --add-port=6379/tcp，将6379端口开启，返回success
+
+//进入到开启redis的bin下
+cd /usr/local/redis/bin
+//开启redis
+./redis-server redis.conf
+
+//查看redis是否启动成功
+ps -aux | grep redis
+
+//正常关闭redis
+./redis-cli shutdown
+
+启动客户端命令：[root@localhost bin]# ./redis-cli -h 127.0.0.1 -p 6379
+
+//给redis设置密码
+127.0.0.1:6379>config set requirepass password
+
+127.0.0.1:6379>quit
+
+127.0.0.1:6379>auth password
+
+//取消密码
+127.0.0.1:6379>config set requirepass ""
+
+make编译的时候，出现"make: 警告:检测到时钟错误。您的创建可能是不完整的"错误。
+解决方法：touch *，如果不行用 find ./ -type f |xargs touch
+
+
+查看ens33网卡的配置： vi /etc/sysconfig/network-scripts/ifcfg-ens33 
+ONBOOT=yes
+
+
+//创建文件夹
+mkdir
+
+//*.rpm形式的二进制软件包
+　　安装：rpm -ivh *.rpm
+　　卸载：rpm -e packgename
+
+//*.tar.gz/*.tgz、*.bz2形式的二进制软件包
+　　安装：tar zxvf *.tar.gz 或 tar yxvf *.bz2
+　　卸载：手动删除
+
+//进入指定redis服务
+ ./redis-cli -h 192.168.119.128 -p 7001 -c
+//创建集群
+./redis-trib.rb create --replicas 1 127.0.0.1:7001 127.0.0.1:7002 127.0.0.1:7003 127.0.0.1:7004 127.0.0.1:7005  127.0.0.1:7006
+
+./redis-trib.rb create --replicas 1 192.168.119.128:7001 192.168.119.128:7002 192.168.119.128:7003 192.168.119.128:7004 192.168.119.128:7005  192.168.119.128:7006
+
+
+/////////////////////////////////////////////////////////
+iptables -I INPUT -p tcp --dport 15672 -j ACCEPT
+rabbitmq-plugins enable rabbitmq_management   #启动后台管理  
+rabbitmq-server -detached   #后台运行rabbitmq 
+rabbitmqctl stop_app #关闭应用
+rabbitmqctl list_queues #查看所有队列信息
+rabbitmqctl reset #清除所有队列

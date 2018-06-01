@@ -1,0 +1,13 @@
+# 删除目录 rm -rf 目录名
+# 删除文件 rm -f 文件名
+
+#把/home/user目录的权限设置为rwxrwxrwx，不包括子目录：
+
+chmod 777 /home/user
+
+#把/home/user目录的权限设置为rwxrwxrwx，包括子目录：
+
+chmod -R 777 /home/user
+
+//开放端口
+iptables -I INPUT -p tcp --dport 5672 -j ACCEPT
